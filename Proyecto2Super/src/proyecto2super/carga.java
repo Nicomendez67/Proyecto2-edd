@@ -28,7 +28,7 @@ public class carga extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnCarga = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -39,8 +39,13 @@ public class carga extends javax.swing.JFrame {
         jLabel1.setText("¡Bienvenido!");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 50, -1, -1));
 
-        jButton1.setText("Cargar Archivo con articulos (txt)");
-        jPanel1.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, -1, -1));
+        btnCarga.setText("Cargar Archivo con articulos (txt)");
+        btnCarga.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCargaActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnCarga, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 130, -1, -1));
 
         jLabel2.setText("Nicolas Mendez y Antonio Yibirin");
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 270, -1, -1));
@@ -49,6 +54,12 @@ public class carga extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargaActionPerformed
+        home pantalla = new home();
+        pantalla.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_btnCargaActionPerformed
 
     /**
      * @param args the command line arguments
@@ -86,7 +97,7 @@ public class carga extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnCarga;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

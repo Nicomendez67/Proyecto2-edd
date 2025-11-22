@@ -14,7 +14,8 @@ public class Proyecto2Super {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        carga inicial = new carga();
+        inicial.setVisible(true);
     }
     
 }
