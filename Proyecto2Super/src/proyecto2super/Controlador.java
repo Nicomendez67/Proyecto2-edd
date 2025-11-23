@@ -4,6 +4,10 @@
  */
 package proyecto2super;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 /**
  *
  * @author Nicolas Mendez, Antonio Yibirin
@@ -175,4 +179,77 @@ public class Controlador {
             insertarInvestigacion(inv);
         }
     }
-}
+    
+    
+    /**
+     * Carga un archivo de texto con artículos.
+     *
+     * @param ruta ruta del archivo
+     * @return true si se cargó bien
+     */
+    public boolean cargarArchivo(String ruta) {
+
+        try {
+
+            BufferedReader br = new BufferedReader(new FileReader(ruta));
+            String linea;
+            String titulo = "";
+            String autores = "";
+            String claves = "";
+            String resumen = "";
+
+            while ((linea = br.readLine()) != null) {
+
+                if (linea.startsWith("TITULO:")) {
+                    titulo = linea.substring(7).trim();
+                }
+
+                if (linea.startsWith("AUTORES:")) {
+                    autores = linea.substring(8).trim();
+                }
+
+                if (linea.startsWith("PALABRAS:")) {
+                    claves = linea.substring(9).trim();
+                }
+
+                if (linea.startsWith("RESUMEN:")) {
+                    resumen = linea.substring(8).trim();
+                }
+
+                // FIN DE UN ARTÍCULO
+                if (linea.equals("FIN")) {
+
+                    // Convertir arrays
+                    String[] listaAutores = autores.split(",");
+                    String[] listaClaves = claves.split(",");
+
+                    // Crear investigación
+                    Investigacion inv = new Investigacion(titulo,listaAutores,resumen, listaClaves);
+
+                    // Insertar investigación en la tabla hash
+                    tablaInvestigaciones.insertar(titulo, inv);
+
+                    // Insertar AUTOR por AUTOR en AVLAutores
+                    for (int i = 0; i < listaAutores.length; i++) {
+                        String a = listaAutores[i].trim();
+                        avlAutores.insertar(a, inv);
+                    }
+
+                    // Insertar CLAVE por CLAVE en AVLPalabrasClave
+                    for (int j = 0; j < listaClaves.length; j++) {
+                        String c = listaClaves[j].trim();
+                        avlPalabrasClave.insertar(c, inv);
+                    }
+                }
+            }
+
+            br.close();
+            return true;
+
+        } catch (IOException ex) {
+            System.out.println("Error leyendo archivo: " + ex.getMessage());
+            return false;
+        }
+    }
+
+    }

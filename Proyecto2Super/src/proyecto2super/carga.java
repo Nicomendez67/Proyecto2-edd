@@ -4,6 +4,10 @@
  */
 package proyecto2super;
 
+import java.io.File;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Nicolas Mendez, Antonio Yibirin
@@ -13,6 +17,8 @@ public class carga extends javax.swing.JFrame {
     /**
      * Creates new form carga
      */
+    public static Controlador controlador = new Controlador();
+    
     public carga() {
         initComponents();
     }
@@ -56,9 +62,25 @@ public class carga extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargaActionPerformed
+        JFileChooser selector = new JFileChooser();
+        int resultado = selector.showOpenDialog(this);
+
+        if (resultado == JFileChooser.APPROVE_OPTION) {
+
+            File archivo = selector.getSelectedFile();
+
+            boolean ok = controlador.cargarArchivo(archivo.getAbsolutePath());
+
+            if (ok) {
+                JOptionPane.showMessageDialog(this, "Archivo cargado correctamente.");
+            } else {
+                JOptionPane.showMessageDialog(this, "Error cargando archivo.");
+            }
+        }
+
         home pantalla = new home();
         pantalla.setVisible(true);
-        this.setVisible(false);
+        this.dispose();
     }//GEN-LAST:event_btnCargaActionPerformed
 
     /**
