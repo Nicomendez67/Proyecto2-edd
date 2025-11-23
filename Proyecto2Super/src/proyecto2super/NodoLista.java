@@ -12,9 +12,9 @@ public class NodoLista<T> {
     private T Dato;  
     private NodoLista<T> Siguiente;
 
-    public NodoLista(T Dato, NodoLista<T> Siguiente) {
+    public NodoLista(T Dato) {
         this.Dato = Dato;
-        this.Siguiente = Siguiente;
+        this.Siguiente = null;
     }
 
     public T getDato() {
