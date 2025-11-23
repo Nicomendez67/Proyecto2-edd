@@ -167,7 +167,7 @@ public class Controlador {
 
         ListaEnlazada<Investigacion> lista = this.tablaInvestigaciones.listarInvestigaciones();
 
-        int tam = lista.tamaño();
+        int tam = lista.tamano();
 
         for (int i = 0; i < tam; i++) {
 

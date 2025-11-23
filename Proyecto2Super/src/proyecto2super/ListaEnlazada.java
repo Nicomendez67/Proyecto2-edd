@@ -100,9 +100,48 @@ public class ListaEnlazada<T> {
      *
      * @return tamaño de la lista
      */
-    public int tamaño() {
+    public int tamano() {
         return size;
     }
+    
+    /**
+    * Elimina la primera aparición del elemento dado.
+    *
+    * @param dato elemento a eliminar
+    * @return true si se eliminó, false si no estaba en la lista
+    */
+   public boolean eliminar(T dato) {
+
+       if (this.cabeza == null) {
+           return false;
+       }
+
+       // Caso 1: el primer nodo es el que hay que eliminar
+       if (this.cabeza.getDato().equals(dato)) {
+           this.cabeza = this.cabeza.getSiguiente();
+           this.size = this.size - 1;
+           return true;
+       }
+
+       NodoLista<T> actual = this.cabeza;
+       NodoLista<T> anterior = null;
+
+       while (actual != null) {
+
+           if (actual.getDato().equals(dato)) {
+
+               anterior.setSiguiente(actual.getSiguiente());
+               this.size = this.size - 1;
+               return true;
+           }
+
+           anterior = actual;
+           actual = actual.getSiguiente();
+       }
+
+       return false;
+   }
+
 
     
 }

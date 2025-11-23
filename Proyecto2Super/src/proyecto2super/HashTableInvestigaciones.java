@@ -164,7 +164,7 @@ public class HashTableInvestigaciones {
         } else {
 
             ListaEnlazada<NodoHash> lista = this.tabla[idx];
-            int tam = lista.tamaño();
+            int tam = lista.tamano();
 
             for (int i = 0; i < tam; i++) {
 
@@ -204,7 +204,7 @@ public class HashTableInvestigaciones {
         } else {
 
             ListaEnlazada<NodoHash> lista = this.tabla[idx];
-            int tam = lista.tamaño();
+            int tam = lista.tamano();
 
             for (int i = 0; i < tam; i++) {
 
@@ -241,7 +241,7 @@ public class HashTableInvestigaciones {
             if (this.tabla[idx] != null) {
 
                 ListaEnlazada<NodoHash> lista = this.tabla[idx];
-                int tam = lista.tamaño();
+                int tam = lista.tamano();
 
                 for (int j = 0; j < tam; j++) {
 
@@ -280,7 +280,7 @@ public class HashTableInvestigaciones {
                 if (this.tabla[idx] != null) {
 
                     ListaEnlazada<NodoHash> lista = this.tabla[idx];
-                    int tam = lista.tamaño();
+                    int tam = lista.tamano();
 
                     for (int j = 0; j < tam; j++) {
 
@@ -496,7 +496,7 @@ public class HashTableInvestigaciones {
             if (this.tabla[idx] != null) {
 
                 ListaEnlazada<NodoHash> lista = this.tabla[idx];
-                int tam = lista.tamaño();
+                int tam = lista.tamano();
 
                 for (int j = 0; j < tam; j++) {
 
