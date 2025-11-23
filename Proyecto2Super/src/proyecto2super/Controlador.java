@@ -17,12 +17,14 @@ public class Controlador {
     private HashTableInvestigaciones tablaInvestigaciones;
     private AVL<String> avlAutores;
     private AVL<String> avlPalabrasClave;
+    private AnalizadorDeResumen analizador;
 
 
     public Controlador() {
         this.tablaInvestigaciones = new HashTableInvestigaciones();
         this.avlAutores = new AVL<>();
         this.avlPalabrasClave = new AVL<>();
+        this.analizador = new AnalizadorDeResumen();
     }
 
     
@@ -251,5 +253,58 @@ public class Controlador {
             return false;
         }
     }
-
+    
+    /**
+     * Obtiene todos los autores en orden ascendente (inorden del AVL).
+     *
+     * @return ListaEnlazada<String> (puede ser vacía)
+     */
+    public ListaEnlazada<String> listarAutores() {
+        return this.avlAutores.recorridoInOrden();
     }
+    
+    
+    /**
+     * Recupera todos los títulos disponibles (recorriendo la tabla de dispersión).
+     *
+     * @return ListaEnlazada<String> con títulos (puede ser vacía)
+     */
+    public ListaEnlazada<String> listarTitulos() {
+
+        ListaEnlazada<String> lista = new ListaEnlazada<String>();
+
+        ListaEnlazada<Investigacion> invs = this.tablaInvestigaciones.listarInvestigaciones();
+
+        if (invs == null) {
+            return lista;
+        }
+
+        int tam = invs.tamano();
+
+        for (int i = 0; i < tam; i++) {
+            Investigacion inv = invs.obtener(i);
+            if (inv != null && inv.getTitulo() != null) {
+                lista.agregar(inv.getTitulo());
+            }
+        }
+
+        return lista;
+    }
+
+    /**
+     * Analiza un texto de resumen y devuelve las N palabras más frecuentes
+     *
+     * @param texto texto del resumen
+     * @return ListaEnlazada PalabraFrecuencia (puede ser vacía)
+     */
+    public ListaEnlazada<PalabraFrecuencia> analizarResumen(String texto) {
+
+        if (texto == null) {
+            return new ListaEnlazada<PalabraFrecuencia>();
+        }
+
+        // por defecto obtener top 10
+        ListaEnlazada<PalabraFrecuencia> resultado = this.analizador.obtenerTopFrecuencias(texto, 10);
+        return resultado;
+    }
+}

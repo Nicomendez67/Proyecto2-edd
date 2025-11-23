@@ -13,8 +13,12 @@ public class home extends javax.swing.JFrame {
     /**
      * Creates new form home
      */
+    
+    private Controlador controlador = carga.controlador;
+    
     public home() {
         initComponents();
+        llenarCombos();
     }
 
     /**
@@ -52,16 +56,36 @@ public class home extends javax.swing.JFrame {
         jPanel1.add(SelectAutor, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 250, -1));
 
         btnSalir.setText("Salir");
+        btnSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSalirActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnSalir, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 490, 250, -1));
         jPanel1.add(inputBuscar, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 140, 250, -1));
 
         btnBuscarAutor.setText("Buscar por Autor");
+        btnBuscarAutor.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarAutorActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnBuscarAutor, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 340, 250, -1));
 
         btnBuscarClave.setText("Buscar");
+        btnBuscarClave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnBuscarClaveActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnBuscarClave, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 170, 250, -1));
 
         btnListarClaves.setText("Listar palabras claves");
+        btnListarClaves.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnListarClavesActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnListarClaves, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 230, 250, -1));
 
         Pantalla.setColumns(20);
@@ -77,12 +101,111 @@ public class home extends javax.swing.JFrame {
         jPanel1.add(SelectResumen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 250, -1));
 
         btnAnalizarResumen.setText("Analizar resumen");
+        btnAnalizarResumen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnalizarResumenActionPerformed(evt);
+            }
+        });
         jPanel1.add(btnAnalizarResumen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 60, 250, -1));
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 730, 540));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+    
+    
+    private void llenarCombos() {
+
+        // Limpiar combos
+        SelectAutor.removeAllItems();
+        SelectResumen.removeAllItems();
+
+        // Llenar autores desde el AVL
+        ListaEnlazada<String> autores = controlador.listarAutores();
+
+        for (int i = 0; i < autores.tamano(); i++) {
+            SelectAutor.addItem(autores.obtener(i));
+        }
+
+        // Llenar resúmenes usando títulos (HashTable)
+        ListaEnlazada<String> titulos = controlador.listarTitulos();
+
+        for (int j = 0; j < titulos.tamano(); j++) {
+            SelectResumen.addItem(titulos.obtener(j));
+        }
+    }
+    
+    
+    private void btnAnalizarResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarResumenActionPerformed
+        String titulo = (String) SelectResumen.getSelectedItem();
+
+        Investigacion inv = controlador.buscarPorTitulo(titulo);
+
+        if (inv == null) {
+            Pantalla.setText("No se encontró investigación");
+            return;
+        }
+
+        ListaEnlazada<PalabraFrecuencia> lista =
+                controlador.analizarResumen(inv.getCuerpo());
+
+        Pantalla.setText("TOP PALABRAS DEL RESUMEN:\n\n");
+
+        for (int i = 0; i < lista.tamano(); i++) {
+            PalabraFrecuencia pf = lista.obtener(i);
+            Pantalla.append(pf.getPalabra() + " : " + pf.getFrecuencia() + "\n");
+        }
+    }//GEN-LAST:event_btnAnalizarResumenActionPerformed
+
+    private void btnBuscarClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClaveActionPerformed
+        String clave = inputBuscar.getText().trim();
+
+        ListaEnlazada<Investigacion> lista =
+                controlador.buscarPorPalabraClave(clave);
+
+        Pantalla.setText("");
+
+        if (lista == null || lista.tamano() == 0) {
+            Pantalla.setText("No se encontraron artículos con esa palabra clave.");
+            return;
+        }
+
+        for (int i = 0; i < lista.tamano(); i++) {
+            Pantalla.append(lista.obtener(i).toString() + "\n\n");
+        }
+    }//GEN-LAST:event_btnBuscarClaveActionPerformed
+
+    private void btnListarClavesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarClavesActionPerformed
+        ListaEnlazada<String> lista = controlador.listarPalabrasClaveOrdenadas();
+
+        Pantalla.setText("PALABRAS CLAVE REGISTRADAS:\n\n");
+
+        for (int i = 0; i < lista.tamano(); i++) {
+            Pantalla.append(lista.obtener(i) + "\n");
+        }
+    }//GEN-LAST:event_btnListarClavesActionPerformed
+
+    private void btnBuscarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAutorActionPerformed
+        String autor = (String) SelectAutor.getSelectedItem();
+
+        ListaEnlazada<Investigacion> lista =
+                controlador.buscarPorAutor(autor);
+
+        Pantalla.setText("");
+
+        if (lista == null || lista.tamano() == 0) {
+            Pantalla.setText("No hay investigaciones de este autor.");
+            return;
+        }
+
+        for (int i = 0; i < lista.tamano(); i++) {
+            Pantalla.append(lista.obtener(i).toString() + "\n\n");
+        }
+    }//GEN-LAST:event_btnBuscarAutorActionPerformed
+
+    private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_btnSalirActionPerformed
 
     /**
      * @param args the command line arguments

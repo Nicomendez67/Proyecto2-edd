@@ -1,0 +1,5 @@
+TITULO: Inteligencia A
+AUTORES: Juan , Maria 
+PALABRAS: IA, redes, a, datos
+RESUMEN: SDFGH ASDFF ADFG IA REDES A DATOS DAOTS
+FIN

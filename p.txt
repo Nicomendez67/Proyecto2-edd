@@ -1,0 +1,17 @@
+TITULO: Inteligencia Artificial Moderna
+AUTORES: Juan Perez, Maria Torres
+PALABRAS: IA, redes, aprendizaje, datos
+RESUMEN: Este artículo presenta conceptos modernos sobre inteligencia artificial y redes neuronales.
+FIN
+
+TITULO: Seguridad Informatica Avanzada
+AUTORES: Carlos Rivas
+PALABRAS: seguridad, hacking, sistemas
+RESUMEN: Analisis de vulnerabilidades y defensas en infraestructuras de redes empresariales.
+FIN
+
+TITULO: Programacion Orientada a Objetos
+AUTORES: Ana Lopez, Juan Perez
+PALABRAS: programacion, objetos, clases, herencia
+RESUMEN: Explicacion de principios fundamentales de la programacion orientada a objetos.
+FIN
