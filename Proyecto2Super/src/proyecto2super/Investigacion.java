@@ -10,10 +10,10 @@ package proyecto2super;
  */
 public class Investigacion {
     
-    String titulo;
-    String[] autores;
-    String cuerpo;
-    String[] palabrasClaves;
+    private String titulo;
+    private String[] autores;
+    private String cuerpo;
+    private String[] palabrasClaves;
 
     public Investigacion(String titulo, String[] autores, String cuerpo, String[] palabrasClaves) {
         this.titulo = titulo;
