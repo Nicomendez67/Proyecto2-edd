@@ -12,9 +12,9 @@ public class ListaEnlazada<T> {
     private NodoLista cabeza;
     private int size;
 
-    public ListaEnlazada(NodoLista cabeza, int size) {
-        this.cabeza = cabeza;
-        this.size = size;
+    public ListaEnlazada() {
+        this.cabeza = null;
+        this.size = 0;
     }
 
     public NodoLista getCabeza() {
