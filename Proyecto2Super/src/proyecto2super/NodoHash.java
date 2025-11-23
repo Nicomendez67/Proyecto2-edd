@@ -12,6 +12,7 @@ public class NodoHash {
     private String clave;
     private Investigacion valor;
 
+
     public NodoHash(String clave, Investigacion valor) {
         this.clave = clave;
         this.valor = valor;
@@ -33,6 +34,6 @@ public class NodoHash {
         this.valor = valor;
     }
 
-    
+      
     
 }
