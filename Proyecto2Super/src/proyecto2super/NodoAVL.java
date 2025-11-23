@@ -8,28 +8,31 @@ package proyecto2super;
  *
  * @author Nicolas Mendez, Antonio Yibirin
  */
-public class NodoAVL {
-    
-    private String palabra;
+public class NodoAVL<T> {
+
+    private T clave;
     private ListaEnlazada<Investigacion> investigaciones;
     private int altura;
-    private NodoAVL izquierdo;
-    private NodoAVL derecho;
+    private NodoAVL<T> izquierdo;
+    private NodoAVL<T> derecho;
 
-        
-    NodoAVL(String palabra, Investigacion inv) {
-        this.palabra = palabra;
+
+    public NodoAVL(T clave, Investigacion inv) {
+        this.clave = clave;
         this.investigaciones = new ListaEnlazada<>();
         this.investigaciones.agregar(inv);
         this.altura = 1;
+        this.izquierdo = null;
+        this.derecho = null;
     }
 
-    public String getPalabra() {
-        return palabra;
+
+    public T getClave() {
+        return clave;
     }
 
-    public void setPalabra(String palabra) {
-        this.palabra = palabra;
+    public void setClave(T clave) {
+        this.clave = clave;
     }
 
     public ListaEnlazada<Investigacion> getInvestigaciones() {
@@ -48,21 +51,19 @@ public class NodoAVL {
         this.altura = altura;
     }
 
-    public NodoAVL getIzquierdo() {
+    public NodoAVL<T> getIzquierdo() {
         return izquierdo;
     }
 
-    public void setIzquierdo(NodoAVL izquierdo) {
+    public void setIzquierdo(NodoAVL<T> izquierdo) {
         this.izquierdo = izquierdo;
     }
 
-    public NodoAVL getDerecho() {
+    public NodoAVL<T> getDerecho() {
         return derecho;
     }
 
-    public void setDerecho(NodoAVL derecho) {
+    public void setDerecho(NodoAVL<T> derecho) {
         this.derecho = derecho;
     }
-    
-    
 }
