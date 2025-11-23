@@ -11,8 +11,8 @@ package proyecto2super;
 public class AVL<T extends Comparable<T>> {
     private NodoAVL<T> raiz;
 
-    public AVL(NodoAVL raiz) {
-        this.raiz = raiz;
+    public AVL() {
+        this.raiz = null;
     }
 
     public NodoAVL getRaiz() {
