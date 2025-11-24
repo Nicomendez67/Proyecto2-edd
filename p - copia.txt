@@ -1,5 +1,5 @@
-TITULO: Inteligencia A
-AUTORES: Juan , Maria 
-PALABRAS: IA, redes, a, datos
-RESUMEN: SDFGH ASDFF ADFG IA REDES A DATOS DAOTS
+TITULO:Segmentación Multicanal de Tumores Cerebrales mediante Autómatas Celulares Ejecutados en GPU
+AUTORES: Antonio Rueda-Toicen, Rhadamés Carmona
+PALABRAS: Autómata Celular, Procesamiento de Imágenes, Segmentación, GPU
+RESUMEN: El trabajo propone un método de segmentación multicanal de tumores cerebrales utilizando autómatas celulares ejecutados en GPU. La técnica mejora el rendimiento al aprovechar la computación paralela masiva. Los resultados muestran una segmentación más rápida y eficiente en comparación con enfoques tradicionales basados en CPU.
 FIN

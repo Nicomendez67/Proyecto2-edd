@@ -328,21 +328,84 @@ public class Controlador {
     }
     
     
-    /**
-     * Analiza un texto de resumen y devuelve las N palabras más frecuentes
-     *
-     * @param texto texto del resumen
-     * @return ListaEnlazada PalabraFrecuencia (puede ser vacía)
-     */
     public ListaEnlazada<PalabraFrecuencia> analizarResumen(String texto) {
-        if (texto == null) {
-            return new ListaEnlazada<PalabraFrecuencia>();
+        ListaEnlazada<PalabraFrecuencia> resultado = new ListaEnlazada<>();
+
+        if (texto == null || texto.isEmpty()) {
+            return resultado;
         }
-        ListaEnlazada<PalabraFrecuencia> resultado = this.analizador.obtenerTopFrecuencias(texto, 10);
+
+        // Pasamos todo a minúsculas para evitar errores de coincidencia
+        String resumen = texto.toLowerCase();
+
+        // 1. Obtener TODAS las palabras clave registradas en el AVL global
+        ListaEnlazada<String> claves = this.avlPalabrasClave.recorridoInOrden();
+        int totalClaves = claves.tamano();
+
+        // Arreglo temporal para ordenar
+        PalabraFrecuencia[] arreglo = new PalabraFrecuencia[totalClaves];
+        int count = 0;
+
+        // 2. Contar cuántas veces aparece cada palabra clave en el resumen
+        for (int i = 0; i < totalClaves; i++) {
+            String clave = claves.obtener(i).toLowerCase();
+
+            if (clave == null || clave.trim().isEmpty()) {
+                continue;
+            }
+
+            int frecuencia = contarOcurrencias(resumen, clave);
+
+            if (frecuencia > 0) {
+                arreglo[count++] = new PalabraFrecuencia(clave, frecuencia);
+            }
+        }
+
+        // Si no hubo coincidencias, terminamos
+        if (count == 0) {
+            return resultado;
+        }
+
+        // 3. Recortar arreglo a tamaño real
+        PalabraFrecuencia[] finalArr = new PalabraFrecuencia[count];
+        System.arraycopy(arreglo, 0, finalArr, 0, count);
+
+        // 4. Ordenar por frecuencia DESCENDENTE (burbuja sencilla para no complicar)
+        for (int i = 0; i < count - 1; i++) {
+            for (int j = 0; j < count - 1 - i; j++) {
+                if (finalArr[j].getFrecuencia() < finalArr[j + 1].getFrecuencia()) {
+                    PalabraFrecuencia temp = finalArr[j];
+                    finalArr[j] = finalArr[j + 1];
+                    finalArr[j + 1] = temp;
+                }
+            }
+        }
+
+        // 5. Insertar solo el Top 10 en la lista
+        int limite = Math.min(10, count);
+        for (int i = 0; i < limite; i++) {
+            resultado.agregar(finalArr[i]);
+        }
+
         return resultado;
     }
     
     
+    private int contarOcurrencias(String texto, String palabra) {
+        int contador = 0;
+        int index = 0;
+
+        while ((index = texto.indexOf(palabra, index)) != -1) {
+            contador++;
+            index += palabra.length();
+        }
+
+        return contador;
+    }
+
+
+
+
     
     /**
      * Genera un reporte (String) con la lista de autores y las investigaciones
