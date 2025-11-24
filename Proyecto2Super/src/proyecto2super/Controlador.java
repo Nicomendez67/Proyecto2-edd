@@ -17,13 +17,11 @@ public class Controlador {
     private HashTableInvestigaciones tablaInvestigaciones;
     private AVL<String> avlAutores;
     private AVL<String> avlPalabrasClave;
-    private AnalizadorDeResumen analizador;
     
     public Controlador() {
         this.tablaInvestigaciones = new HashTableInvestigaciones();
         this.avlAutores = new AVL<>();
         this.avlPalabrasClave = new AVL<>();
-        this.analizador = new AnalizadorDeResumen();
     }
     
     
@@ -494,75 +492,6 @@ public class Controlador {
     }
     
     
-    /**
-    * Genera un reporte que muestra cada palabra clave registrada y las investigaciones relacionadas a ella.
-    *
-    * @return cadena de texto con el reporte formateado
-    */
-
-    public String generarReportePalabrasClave() {
-        StringBuilder sb = new StringBuilder();
-        ListaEnlazada<String> claves = listarPalabrasClaveOrdenadas();
-        for (int i = 0; i < claves.tamano(); i++) {
-            String clave = claves.obtener(i);
-            ListaEnlazada<Investigacion> invs = buscarPorPalabraClave(clave);
-            sb.append("Palabra clave: ").append(clave).append("\n");
-            if (invs == null || invs.tamano() == 0) {
-                sb.append("  (sin investigaciones)\n\n");
-                continue;
-            }
-            for (int j = 0; j < invs.tamano(); j++) {
-                sb.append("  - ").append(invs.obtener(j).getTitulo()).append("\n");
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
     
-    
-    /**
-    * Construye un reporte completo mostrando toda la información de cada investigación registrada.
-    *
-    * @return cadena con el contenido completo formateado
-    */
-
-    public String generarReporteCompleto() {
-        StringBuilder sb = new StringBuilder();
-        ListaEnlazada<Investigacion> lista = obtenerTodasLasInvestigaciones();
-        for (int i = 0; i < lista.tamano(); i++) {
-            Investigacion inv = lista.obtener(i);
-            sb.append(inv.toString()).append("\n\n");
-        }
-        return sb.toString();
-    }
-    
-    
-    /**
-    * Realiza una búsqueda por contenido dentro del cuerpo de cada investigación.
-    * La comparación se realiza normalizando texto y buscando coincidencias.
-    *
-    * @param termino palabra o frase a buscar dentro del contenido
-    * @return lista enlazada con investigaciones cuyo cuerpo contiene el término
-    */
-
-    public ListaEnlazada<Investigacion> buscarPorContenido(String termino) {
-        ListaEnlazada<Investigacion> resultado = new ListaEnlazada<>();
-        if (termino == null || termino.trim().isEmpty()) return resultado;
-        
-        String tnorm = normalizar(termino);
-        ListaEnlazada<Investigacion> todas = obtenerTodasLasInvestigaciones();
-        
-        for (int i = 0; i < todas.tamano(); i++) {
-            Investigacion inv = todas.obtener(i);
-            if (inv == null || inv.getCuerpo() == null) continue;
-            
-            String cuerpoNorm = normalizar(inv.getCuerpo());
-            if (cuerpoNorm.contains(tnorm)) {
-                resultado.agregar(inv);
-            }
-        }
-        
-        return resultado;
-    }
     
 }

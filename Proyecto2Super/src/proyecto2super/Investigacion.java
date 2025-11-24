@@ -61,21 +61,6 @@ public class Investigacion {
         return s;
     }
 
-    /**
-     * Verifica si un nombre coincide con alguno de los autores del artículo.
-     * La comparación ignora mayúsculas, minúsculas y espacios.
-     *
-     * @param autor nombre del autor a buscar
-     * @return true si el autor pertenece a esta investigación, false en caso contrario
-     */
-    public boolean contieneAutor(String autor) {
-        for (String a : autores) {
-            if (a.trim().equalsIgnoreCase(autor.trim())) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     /**
      * Devuelve una representación en texto de toda la investigación:
