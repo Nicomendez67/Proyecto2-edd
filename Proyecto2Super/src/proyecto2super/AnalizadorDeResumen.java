@@ -105,7 +105,11 @@ public class AnalizadorDeResumen {
     }
 
     /**
-     * Busca una palabra dentro de una lista de frecuencias.
+     * Busca dentro de una lista de frecuencias si una palabra ya existe.
+     *
+     * @param lista lista donde se buscará
+     * @param palabra palabra que se desea encontrar
+     * @return objeto PalabraFrecuencia si existe, o null si no
      */
     private PalabraFrecuencia buscarFrecuencia(ListaEnlazada<PalabraFrecuencia> lista, String palabra) {
 
@@ -149,7 +153,10 @@ public class AnalizadorDeResumen {
     }
 
     /**
-     * Obtiene la palabra con mayor frecuencia dentro de una lista.
+     * Obtiene el elemento con mayor frecuencia dentro de una lista.
+     *
+     * @param lista lista de palabras con frecuencia
+     * @return la palabra con mayor frecuencia o null si la lista está vacía
      */
     private PalabraFrecuencia obtenerMayor(ListaEnlazada<PalabraFrecuencia> lista) {
 

@@ -80,6 +80,15 @@ public class carga extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    /**
+     * Evento del botón "Cargar Archivo con articulos".
+     * 
+     * Abre un selector de archivos y permite al usuario elegir un archivo .txt
+     * con investigaciones en el formato requerido.
+     *
+     * @param evt evento generado al hacer clic en el botón
+     */
     private void btnCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargaActionPerformed
         JFileChooser selector = new JFileChooser();
         selector.setFileFilter(new FileNameExtensionFilter("Archivos de texto (.txt)", "txt")); // Opcional recomendado

@@ -290,7 +290,12 @@ public class AVL<T extends Comparable<T>> {
     }
     
     
-    
+    /**
+     * Normaliza una clave eliminando espacios dobles y manejando mayúsculas.
+     *
+     * @param clave clave original
+     * @return cadena normalizada
+     */
     private String normalizarClave(String clave) {
         if (clave == null){
             return "";

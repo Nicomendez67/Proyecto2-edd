@@ -115,7 +115,10 @@ public class home extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    
+    /**
+     * Llena los ComboBox:     * 
+     * Se asegura de que existan autores e investigaciones antes de agregarlos.
+     */
     private void llenarCombos() {
 
         // Limpiar combos
@@ -141,7 +144,14 @@ public class home extends javax.swing.JFrame {
         }
     }
     
-    
+    /**
+     * Acción del botón "Analizar resumen".
+     * Obtiene el título seleccionado, recupera la investigación correspondiente y analiza el contenido del cuerpo del resumen.
+     * 
+     * Muestra en la pantalla las palabras más frecuentes encontradas.
+     *
+     * @param evt evento generado por el botón
+     */
     private void btnAnalizarResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarResumenActionPerformed
         if (SelectResumen.getItemCount() == 0) {
             Pantalla.setText("No hay investigaciones cargadas.");
@@ -166,6 +176,14 @@ public class home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAnalizarResumenActionPerformed
 
+    /**
+     * Acción del botón "Buscar" para palabras clave.
+     * Realiza una búsqueda de investigaciones que contengan la palabra ingresada.
+     * 
+     * Si no encuentra coincidencias se muestra un mensaje correspondiente.
+     *
+     * @param evt evento generado por el botón
+     */
     private void btnBuscarClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClaveActionPerformed
         String clave = inputBuscar.getText().trim();
 
@@ -189,6 +207,12 @@ public class home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarClaveActionPerformed
 
+    /**
+     * Acción del botón "Listar palabras claves".
+     * Recupera todas las palabras clave registradas y las muestra ordenadas.
+     *
+     * @param evt evento generado por el botón
+     */
     private void btnListarClavesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarClavesActionPerformed
         ListaEnlazada<String> lista = controlador.listarPalabrasClaveOrdenadas();
 
@@ -199,6 +223,14 @@ public class home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnListarClavesActionPerformed
 
+    /**
+     * Acción del botón "Buscar por Autor".
+     * Busca todas las investigaciones asociadas al autor seleccionado.
+     * 
+     * Muestra un mensaje si no existen investigaciones del autor.
+     *
+     * @param evt evento generado por el botón
+     */
     private void btnBuscarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAutorActionPerformed
         if (SelectAutor.getItemCount() == 0) {
             Pantalla.setText("No hay autores registrados.");
@@ -222,6 +254,12 @@ public class home extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnBuscarAutorActionPerformed
 
+    /**
+     * Acción del botón "Salir".
+     * Guarda los datos actuales mediante el controlador y finaliza la aplicación.
+     *
+     * @param evt evento generado por el botón
+     */
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
         try {
             controlador.guardarEnArchivo(carga.DATA_RUTA);

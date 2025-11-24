@@ -28,11 +28,12 @@ public class Controlador {
     
     
     /**
-     * Normaliza cadenas para comparación/almacenamiento:
-     * - trim
-     * - convertir a minúsculas
-     * - colapsar múltiples espacios a uno
-     */
+    * Normaliza un texto para comparación y almacenamiento.
+    * Aplica trim(), convierte a minúsculas y reduce múltiples espacios a uno solo.
+    *
+    * @param s cadena original
+    * @return cadena normalizada o null si la entrada es null
+    */
     private String normalizar(String s) {
         if (s == null) return null;
         String t = s.trim().toLowerCase();
@@ -155,33 +156,48 @@ public class Controlador {
     
     
     /**
-     * Obtiene las palabras clave ordenadas (recorrido inorden del AVL).
-     */
+    * Obtiene todas las palabras clave almacenadas en el AVL,
+    * ordenadas alfabéticamente mediante recorrido inorden.
+    *
+    * @return lista enlazada con palabras clave en orden ascendente
+    */
+
     public ListaEnlazada<String> listarPalabrasClaveOrdenadas() {
         return this.avlPalabrasClave.recorridoInOrden();
     }
     
     
     /**
-     * Obtiene los autores ordenados (recorrido inorden del AVL).
-     */
+    * Recupera todos los autores almacenados en el AVL correspondiente,
+    * ordenados alfabéticamente mediante recorrido inorden.
+    *
+    * @return lista enlazada de autores ordenados
+    */
+
     public ListaEnlazada<String> listarAutoresOrdenados() {
         return this.avlAutores.recorridoInOrden();
     }
     
     
-    /**
-     * Guarda todas las investigaciones en un archivo.
-     */
+   /**
+    * Guarda todas las investigaciones en un archivo de texto,
+    *
+    * @param ruta ruta completa donde se guardará el archivo
+    * @throws Exception si ocurre algún error de escritura
+    */
+
     public void guardarEnArchivo(String ruta) throws Exception {
         this.tablaInvestigaciones.guardarEnArchivo(ruta);
     }
     
     
     /**
-     * Carga investigaciones desde un archivo y las reinserta en todas
-     * las estructuras.
+     * Carga investigaciones desde un archivo y las reinserta en todas las estructuras.
+     *
+     * @param ruta ruta del archivo a leer
+     * @throws Exception si ocurre un error de lectura
      */
+
     public void cargarDesdeArchivo(String ruta) throws Exception {
         this.tablaInvestigaciones = new HashTableInvestigaciones();
         this.avlAutores = new AVL<>();
@@ -194,8 +210,38 @@ public class Controlador {
 
         for (int i = 0; i < tam; i++) {
             Investigacion inv = lista.obtener(i);
-            insertarInvestigacion(inv);
+            if (inv == null) continue;
+
+
+            // Insertar autores en el AVL de autores
+            String[] autores = inv.getAutores();
+            if (autores != null) {
+                for (int a = 0; a < autores.length; a++) {
+                    String autor = autores[a];
+                    if (autor != null) {
+                        autor = normalizar(autor);
+                        if (!autor.isEmpty()) {
+                            this.avlAutores.insertar(autor, inv);
+                        }
+                    }
+                }
+            }
+
+            // Insertar palabras clave en el AVL de palabras clave
+            String[] claves = inv.getPalabrasClaves();
+            if (claves != null) {
+                for (int k = 0; k < claves.length; k++) {
+                    String clave = claves[k];
+                    if (clave != null) {
+                        clave = normalizar(clave);
+                        if (!clave.isEmpty()) {
+                            this.avlPalabrasClave.insertar(clave, inv);
+                        }
+                    }
+                }
+            }
         }
+
     }
     
     
@@ -328,6 +374,13 @@ public class Controlador {
     }
     
     
+    /**
+    * Analiza un resumen y determina la frecuencia de aparición de las palabras clave registradas en el sistema.
+    *
+    * @param texto contenido del resumen a analizar
+    * @return lista de objetos PalabraFrecuencia ordenados por frecuencia descendente
+    */
+
     public ListaEnlazada<PalabraFrecuencia> analizarResumen(String texto) {
         ListaEnlazada<PalabraFrecuencia> resultado = new ListaEnlazada<>();
 
@@ -391,6 +444,14 @@ public class Controlador {
     }
     
     
+    /**
+    * Cuenta cuántas veces aparece una palabra dentro de un texto dado.
+    * Utiliza búsqueda de subcadenas.
+    *
+    * @param texto texto donde buscar
+    * @param palabra palabra clave a contabilizar
+    * @return número de apariciones encontradas
+    */
     private int contarOcurrencias(String texto, String palabra) {
         int contador = 0;
         int index = 0;
@@ -408,9 +469,11 @@ public class Controlador {
 
     
     /**
-     * Genera un reporte (String) con la lista de autores y las investigaciones
-     * asociadas.
-     */
+    * Construye un reporte en formato texto plano que lista todos los autores y las investigaciones asociadas a cada uno.
+    *
+    * @return cadena con el reporte formateado
+    */
+
     public String generarReporteAutores() {
         StringBuilder sb = new StringBuilder();
         ListaEnlazada<String> autores = listarAutoresOrdenados();
@@ -432,8 +495,11 @@ public class Controlador {
     
     
     /**
-     * Genera un reporte con las palabras clave y las investigaciones relacionadas.
-     */
+    * Genera un reporte que muestra cada palabra clave registrada y las investigaciones relacionadas a ella.
+    *
+    * @return cadena de texto con el reporte formateado
+    */
+
     public String generarReportePalabrasClave() {
         StringBuilder sb = new StringBuilder();
         ListaEnlazada<String> claves = listarPalabrasClaveOrdenadas();
@@ -455,8 +521,11 @@ public class Controlador {
     
     
     /**
-     * Genera un reporte completo con todas las investigaciones (orden: no garantizado).
-     */
+    * Construye un reporte completo mostrando toda la información de cada investigación registrada.
+    *
+    * @return cadena con el contenido completo formateado
+    */
+
     public String generarReporteCompleto() {
         StringBuilder sb = new StringBuilder();
         ListaEnlazada<Investigacion> lista = obtenerTodasLasInvestigaciones();
@@ -469,9 +538,13 @@ public class Controlador {
     
     
     /**
-     * Busca investigaciones cuyo cuerpo contenga la palabra/frase dada.
-     * Búsqueda básica: normaliza y busca subcadena.
-     */
+    * Realiza una búsqueda por contenido dentro del cuerpo de cada investigación.
+    * La comparación se realiza normalizando texto y buscando coincidencias.
+    *
+    * @param termino palabra o frase a buscar dentro del contenido
+    * @return lista enlazada con investigaciones cuyo cuerpo contiene el término
+    */
+
     public ListaEnlazada<Investigacion> buscarPorContenido(String termino) {
         ListaEnlazada<Investigacion> resultado = new ListaEnlazada<>();
         if (termino == null || termino.trim().isEmpty()) return resultado;

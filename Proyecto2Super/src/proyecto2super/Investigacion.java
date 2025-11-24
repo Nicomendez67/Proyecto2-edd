@@ -46,6 +46,11 @@ public class Investigacion {
         this.palabrasClaves = palabrasClaves;
     }
 
+    /**
+     * Devuelve los autores en formato de texto, separados por coma.
+     *
+     * @return autores como una cadena legible
+     */
     public String getAutoresComoTexto() {
         if (autores == null) return "";
         String s = "";
@@ -56,6 +61,13 @@ public class Investigacion {
         return s;
     }
 
+    /**
+     * Verifica si un nombre coincide con alguno de los autores del artículo.
+     * La comparación ignora mayúsculas, minúsculas y espacios.
+     *
+     * @param autor nombre del autor a buscar
+     * @return true si el autor pertenece a esta investigación, false en caso contrario
+     */
     public boolean contieneAutor(String autor) {
         for (String a : autores) {
             if (a.trim().equalsIgnoreCase(autor.trim())) {
@@ -65,6 +77,12 @@ public class Investigacion {
         return false;
     }
 
+    /**
+     * Devuelve una representación en texto de toda la investigación:
+     * título, autores, palabras clave y el resumen.
+     *
+     * @return representación textual completa de la investigación
+     */
     @Override
     public String toString() {
         String claves = "";

@@ -478,7 +478,12 @@ public class HashTableInvestigaciones {
     }
     
     
-    // helper: normaliza claves para evitar duplicados por mayúsculas/espacios
+    /**
+     * normaliza claves para evitar duplicados por mayúsculas/espacios
+     *
+     * @param clave clave original
+     * @return cadena normalizada
+     */
     private String normalizarClave(String clave) {
         if (clave == null) return "";
         String t = clave.trim().toLowerCase();
