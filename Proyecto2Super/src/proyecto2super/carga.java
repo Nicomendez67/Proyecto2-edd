@@ -7,6 +7,7 @@ package proyecto2super;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  *
@@ -18,9 +19,27 @@ public class carga extends javax.swing.JFrame {
      * Creates new form carga
      */
     public static Controlador controlador = new Controlador();
+    public static final String DATA_RUTA = "data/investigaciones_db.txt";
     
     public carga() {
         initComponents();
+        File f = new File(DATA_RUTA);
+        if (f.exists() && f.length() > 0) {
+            try {
+                controlador.cargarDesdeArchivo(DATA_RUTA);
+                JOptionPane.showMessageDialog(this, "Datos cargados desde: " + DATA_RUTA);
+            } catch (Exception ex) {
+                // No fatal: seguir con ejecución, pero avisar al usuario
+                JOptionPane.showMessageDialog(this,
+                        "No se pudieron cargar los datos guardados.\n" + ex.getMessage(),
+                        "Aviso", JOptionPane.WARNING_MESSAGE);
+                ex.printStackTrace();
+            }
+        } else {
+            // No hay archivo guardado — opción: crear carpeta data para futuros guardados
+            File dir = new File("data");
+            if (!dir.exists()) dir.mkdirs();
+        }
     }
 
     /**
@@ -63,24 +82,34 @@ public class carga extends javax.swing.JFrame {
 
     private void btnCargaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCargaActionPerformed
         JFileChooser selector = new JFileChooser();
+        selector.setFileFilter(new FileNameExtensionFilter("Archivos de texto (.txt)", "txt")); // Opcional recomendado
+
         int resultado = selector.showOpenDialog(this);
 
         if (resultado == JFileChooser.APPROVE_OPTION) {
 
             File archivo = selector.getSelectedFile();
-
             boolean ok = controlador.cargarArchivo(archivo.getAbsolutePath());
 
             if (ok) {
                 JOptionPane.showMessageDialog(this, "Archivo cargado correctamente.");
-            } else {
-                JOptionPane.showMessageDialog(this, "Error cargando archivo.");
-            }
-        }
 
-        home pantalla = new home();
-        pantalla.setVisible(true);
-        this.dispose();
+                // Solo abrir ventana Home si todo fue bien
+                home pantalla = new home();
+                pantalla.setVisible(true);
+                this.dispose();
+
+            } else {
+                JOptionPane.showMessageDialog(this, 
+                        "Error cargando el archivo.\nVerifique el formato del archivo.",
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+            }
+
+        } else {
+            // Usuario canceló, no hacemos nada.
+            JOptionPane.showMessageDialog(this, "Carga cancelada.");
+        }
     }//GEN-LAST:event_btnCargaActionPerformed
 
     /**

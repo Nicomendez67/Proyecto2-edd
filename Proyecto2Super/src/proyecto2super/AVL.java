@@ -31,7 +31,8 @@ public class AVL<T extends Comparable<T>> {
      * @param inv investigación asociada
      */
     public void insertar(T clave, Investigacion inv) {
-        raiz = insertarRec(raiz, clave, inv);
+        T normalizada = (T) normalizarClave(clave.toString());
+        raiz = insertarRec(raiz, normalizada, inv);
     }
 
     /**
@@ -42,7 +43,7 @@ public class AVL<T extends Comparable<T>> {
      */
     public ListaEnlazada<Investigacion> buscar(T clave) {
 
-        NodoAVL<T> nodo = buscarNodo(raiz, clave);
+        NodoAVL<T> nodo = buscarNodo(raiz, (T) normalizarClave(clave.toString()));
 
         if (nodo != null) {
             return nodo.getInvestigaciones();
@@ -89,10 +90,11 @@ public class AVL<T extends Comparable<T>> {
             } else {
 
                 if (cmp == 0) {
-                    nodo.getInvestigaciones().agregar(inv);
+                    if (!nodo.getInvestigaciones().contiene(inv)) {
+                        nodo.getInvestigaciones().agregar(inv);
+                    }
+                    return nodo;
                 }
-
-                return nodo;
             }
         }
 
@@ -285,5 +287,15 @@ public class AVL<T extends Comparable<T>> {
         y.setAltura(1 + Math.max(alturaIzqY, alturaDerY));
 
         return y;
+    }
+    
+    
+    
+    private String normalizarClave(String clave) {
+        if (clave == null){
+            return "";
+        }else{
+            return clave.trim().toLowerCase().replaceAll("\\s+", " ");
+        }
     }
 }

@@ -4,6 +4,10 @@
  */
 package proyecto2super;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author Nicolas Mendez, Antonio Yibirin
@@ -52,7 +56,6 @@ public class home extends javax.swing.JFrame {
         jSeparator1.setOrientation(javax.swing.SwingConstants.VERTICAL);
         jPanel1.add(jSeparator1, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 20, 20, 500));
 
-        SelectAutor.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(SelectAutor, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 310, 250, -1));
 
         btnSalir.setText("Salir");
@@ -97,7 +100,6 @@ public class home extends javax.swing.JFrame {
         jLabel1.setText("Buscar por palabra clave:");
         jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, -1, -1));
 
-        SelectResumen.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
         jPanel1.add(SelectResumen, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 30, 250, -1));
 
         btnAnalizarResumen.setText("Analizar resumen");
@@ -117,28 +119,36 @@ public class home extends javax.swing.JFrame {
     private void llenarCombos() {
 
         // Limpiar combos
-        SelectAutor.removeAllItems();
-        SelectResumen.removeAllItems();
+        //SelectAutor.removeAllItems();
+        //SelectResumen.removeAllItems();
 
         // Llenar autores desde el AVL
         ListaEnlazada<String> autores = controlador.listarAutores();
 
-        for (int i = 0; i < autores.tamano(); i++) {
-            SelectAutor.addItem(autores.obtener(i));
+        if (autores != null) {
+            for (int i = 0; i < autores.tamano(); i++) {
+                String autor = autores.obtener(i);
+                SelectAutor.addItem(autor);
+            }
         }
+    
+        ListaEnlazada<Investigacion> investigaciones = controlador.obtenerTodasLasInvestigaciones(); 
 
-        // Llenar resúmenes usando títulos (HashTable)
-        ListaEnlazada<String> titulos = controlador.listarTitulos();
-
-        for (int j = 0; j < titulos.tamano(); j++) {
-            SelectResumen.addItem(titulos.obtener(j));
+        if (investigaciones != null) {
+            for (int i = 0; i < investigaciones.tamano(); i++) {
+                SelectResumen.addItem(investigaciones.obtener(i).getTitulo());
+            }
         }
     }
     
     
     private void btnAnalizarResumenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarResumenActionPerformed
-        String titulo = (String) SelectResumen.getSelectedItem();
+        if (SelectResumen.getItemCount() == 0) {
+            Pantalla.setText("No hay investigaciones cargadas.");
+            return;
+        }
 
+        String titulo = (String) SelectResumen.getSelectedItem();
         Investigacion inv = controlador.buscarPorTitulo(titulo);
 
         if (inv == null) {
@@ -150,7 +160,6 @@ public class home extends javax.swing.JFrame {
                 controlador.analizarResumen(inv.getCuerpo());
 
         Pantalla.setText("TOP PALABRAS DEL RESUMEN:\n\n");
-
         for (int i = 0; i < lista.tamano(); i++) {
             PalabraFrecuencia pf = lista.obtener(i);
             Pantalla.append(pf.getPalabra() + " : " + pf.getFrecuencia() + "\n");
@@ -159,6 +168,11 @@ public class home extends javax.swing.JFrame {
 
     private void btnBuscarClaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarClaveActionPerformed
         String clave = inputBuscar.getText().trim();
+
+        if (clave.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Ingrese una palabra clave.");
+            return;
+        }
 
         ListaEnlazada<Investigacion> lista =
                 controlador.buscarPorPalabraClave(clave);
@@ -186,6 +200,11 @@ public class home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnListarClavesActionPerformed
 
     private void btnBuscarAutorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarAutorActionPerformed
+        if (SelectAutor.getItemCount() == 0) {
+            Pantalla.setText("No hay autores registrados.");
+            return;
+        }
+
         String autor = (String) SelectAutor.getSelectedItem();
 
         ListaEnlazada<Investigacion> lista =
@@ -204,6 +223,11 @@ public class home extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBuscarAutorActionPerformed
 
     private void btnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSalirActionPerformed
+        try {
+            controlador.guardarEnArchivo(carga.DATA_RUTA);
+        } catch (Exception ex) {
+            Logger.getLogger(home.class.getName()).log(Level.SEVERE, null, ex);
+        }
         System.exit(0);
     }//GEN-LAST:event_btnSalirActionPerformed
 

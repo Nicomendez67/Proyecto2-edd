@@ -1,13 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package proyecto2super;
 
-/**
- *
- * @author Nicolas Mendez, Antonio Yibirin
- */
 public class Investigacion {
     
     private String titulo;
@@ -53,6 +45,39 @@ public class Investigacion {
     public void setPalabrasClaves(String[] palabrasClaves) {
         this.palabrasClaves = palabrasClaves;
     }
-    
-    
+
+    public String getAutoresComoTexto() {
+        if (autores == null) return "";
+        String s = "";
+        for (int i = 0; i < autores.length; i++) {
+            s += autores[i];
+            if (i < autores.length - 1) s += ", ";
+        }
+        return s;
+    }
+
+    public boolean contieneAutor(String autor) {
+        for (String a : autores) {
+            if (a.trim().equalsIgnoreCase(autor.trim())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        String claves = "";
+        if (palabrasClaves != null) {
+            for (int i = 0; i < palabrasClaves.length; i++) {
+                claves += palabrasClaves[i];
+                if (i < palabrasClaves.length - 1) claves += ", ";
+            }
+        }
+
+        return "TÍTULO: " + titulo + "\n" +
+               "AUTORES: " + getAutoresComoTexto() + "\n" +
+               "PALABRAS CLAVE: " + claves + "\n\n" +
+               "RESUMEN:\n" + cuerpo;
+    }
 }
